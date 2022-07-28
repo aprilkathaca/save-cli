@@ -5,6 +5,7 @@ build
 *.iml
 out
 .DS_Store
+/examples/kotlin-diktat/ktlint
 
 # Compiled class file
 *.class

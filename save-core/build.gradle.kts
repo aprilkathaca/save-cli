@@ -76,30 +76,21 @@ tasks.withType<KotlinCompile<*>>().forEach {
     it.dependsOn(generateVersionFileTaskProvider)
 }
 
-tasks.register<Download>("downloadTestResources") {
-    src(listOf(
-        Versions.IntegrationTest.ktlintLink,
-        Versions.IntegrationTest.diktatLink,
-    ))
+tasks.register<Download>("downloadTestResources1") {
+    src(Versions.IntegrationTest.ktlintLink)
+    overwrite(false)
+    onlyIfModified(true)
     dest("../examples/kotlin-diktat")
-    doLast {
-        Files.move(
-            file("../examples/kotlin-diktat/diktat-${Versions.IntegrationTest.diktat}.jar").toPath(),
-            file("../examples/kotlin-diktat/diktat.jar").toPath(),
-            StandardCopyOption.REPLACE_EXISTING
-        )
-    }
 }
 
-val cleanupTask = tasks.register("cleanupTestResources") {
-    this.dependsOn(":save-cli:jvmTest")
-    mustRunAfter(tasks.withType<Test>())
-    doFirst {
-        file("../examples/kotlin-diktat/ktlint").delete()
-        file("../examples/kotlin-diktat/diktat.jar").delete()
-    }
+tasks.register<Download>("downloadTestResources2") {
+    src(Versions.IntegrationTest.diktatLink)
+    overwrite(false)
+    onlyIfModified(true)
+    dest("../examples/kotlin-diktat/diktat.jar")
 }
+
 tasks.withType<Test>().configureEach {
-    dependsOn("downloadTestResources")
-    finalizedBy("cleanupTestResources")
+    dependsOn("downloadTestResources1")
+    dependsOn("downloadTestResources2")
 }
