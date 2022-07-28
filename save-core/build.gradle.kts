@@ -76,11 +76,12 @@ tasks.withType<KotlinCompile<*>>().forEach {
     it.dependsOn(generateVersionFileTaskProvider)
 }
 
-tasks.register<Download>("downloadTestResources1") {
+tasks.register<Download>("downloadTestResources") {
     src(Versions.IntegrationTest.ktlintLink)
     overwrite(false)
     onlyIfModified(true)
     dest("../examples/kotlin-diktat")
+    dependsOn("downloadTestResources2")
 }
 
 tasks.register<Download>("downloadTestResources2") {
@@ -91,6 +92,5 @@ tasks.register<Download>("downloadTestResources2") {
 }
 
 tasks.withType<Test>().configureEach {
-    dependsOn("downloadTestResources1")
-    dependsOn("downloadTestResources2")
+    dependsOn("downloadTestResources")
 }
