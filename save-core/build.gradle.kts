@@ -97,18 +97,10 @@ tasks.withType<Test>().configureEach {
 
 project.afterEvaluate {
     tasks.named("compileCommonNonJsMainKotlinMetadata").configure {
-        dependsOn("generateConfigOptions")
-    }
-
-    tasks.named("compileCommonNonJsMainKotlinMetadata").configure {
-        dependsOn("generateVersionsFile")
+        dependsOn("generateConfigOptions","generateVersionsFile")
     }
 
     tasks.named("sourcesJar").configure {
-        dependsOn("generateConfigOptions")
-    }
-
-    tasks.named("sourcesJar").configure {
-        dependsOn("generateVersionsFile")
+        dependsOn("generateConfigOptions","generateVersionsFile")
     }
 }
