@@ -108,7 +108,7 @@ project.afterEvaluate {
         dependsOn("generateConfigOptions")
     }
 
-    tasks.named("core:sourcesJar").configure {
+    tasks.named("sourcesJar").configure {
         dependsOn("generateVersionsFile")
     }
 }
