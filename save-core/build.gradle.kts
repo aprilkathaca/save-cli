@@ -94,3 +94,19 @@ tasks.register<Download>("downloadTestResources2") {
 tasks.withType<Test>().configureEach {
     dependsOn("downloadTestResources")
 }
+
+tasks.named("compileCommonNonJsMainKotlinMetadata").configure{
+    dependsOn("generateConfigOptions")
+}
+
+tasks.named("compileCommonNonJsMainKotlinMetadata").configure{
+    dependsOn("generateVersionsFile")
+}
+
+tasks.named("sourcesJar").configure{
+    dependsOn("generateConfigOptions")
+}
+
+tasks.named("core:sourcesJar").configure{
+    dependsOn("generateVersionsFile")
+}
