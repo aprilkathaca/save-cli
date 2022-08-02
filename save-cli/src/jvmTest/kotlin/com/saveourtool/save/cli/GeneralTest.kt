@@ -108,30 +108,30 @@ class GeneralTest {
             fs.delete(reportFile)
         }
 
-        // AKM  val runCmd = if (isCurrentOsWindows()) "" else "sudo chmod +x $saveBinName && ./"
-        val runCmd = if (isCurrentOsWindows()) "" else "./"
+        val runCmd = if (isCurrentOsWindows()) "" else "sudo chmod +x $saveBinName && ./"
+        // AKM val runCmd = if (isCurrentOsWindows()) "" else "./"
 
         val saveFlags = " $testRootDir --result-output file --report-type json --log all"
         // Execute the script from examples
         val execCmd = "$runCmd$saveBinName $saveFlags"
-        // AKM  val pb = ProcessBuilder(true, fs).exec(execCmd, workingDir, null, 200_000L)
-        // AKM  println("SAVE execution output:\n${pb.stdout.joinToString("\n")}")
-        // AKM  if (pb.stderr.isNotEmpty()) {
-        // AKM     println("Warning and errors during SAVE execution:\n${pb.stderr.joinToString("\n")}")
+        val pb = ProcessBuilder(true, fs).exec(execCmd, workingDir, null, 200_000L)
+        println("SAVE execution output:\n${pb.stdout.joinToString("\n")}")
+        if (pb.stderr.isNotEmpty()) {
+            println("Warning and errors during SAVE execution:\n${pb.stderr.joinToString("\n")}")
         }
 
         // We need some time, before the report will be completely filled
-        // AKM  Thread.sleep(30_000)
+        Thread.sleep(30_000)
 
         // Report should be created after successful completion
-        // AKM  assertTrue(fs.exists(reportFile))
+        assertTrue(fs.exists(reportFile))
 
-       // AKM   val reports: List<Report> = json.decodeFromString(fs.readFile(reportFile))
+        val reports: List<Report> = json.decodeFromString(fs.readFile(reportFile))
 
-        // AKM  println("Following tests failed: ${reports.map { it.testSuite }}")
+        println("Following tests failed: ${reports.map { it.testSuite }}")
 
-        // AKM  assertReports(reports)
-        // AKM  fs.delete(destination)
-        //AKM  fs.delete(reportFile)
+        assertReports(reports)
+        fs.delete(destination)
+        fs.delete(reportFile)
     }
 }
